@@ -1,0 +1,12 @@
+export type User={id:number;name:string;email?:string;birth_date:string;birth_time:string;birth_city:string;primary_focus:string;interests:string;notifications:string};
+export type Memory={id:number;type:string;content:string;importance:number;created_at:string};
+export type LifeEvent={id:number;title:string;description:string;date:string;category:string;importance:number};
+export type Guidance={overall_score:number;career_score:number;relationship_score:number;finance_score:number;energy_score:number;insight:string;recommended_action:string;date:string};
+export type DailyReflection={id:number;user_id:number;date:string;mood:"Great"|"Normal"|"Difficult";resonance:"Strongly"|"Partially"|"Not really";notes:string};
+export type DashboardData={user:User;guidance:Guidance;memories:Memory[];events:LifeEvent[];history?:Guidance[];reflection:DailyReflection|null;recommended_astrologer:Astrologer|null};
+export type Astrologer={id:number;name:string;specialization:string;rating:number;review_count:number;experience_years:number;price_per_minute:number;languages:string;availability:string;bio:string};
+export type Report={id:number;share_id:string;compatibility_type:string;person_a_name:string;person_b_name:string;overall_score:number;communication_score:number;emotional_score:number;ambition_score:number;decision_score:number;trust_score:number;strengths:string[];friction_points:string[];recommendation:string};
+export type ChatResponse={conversationId:number;response:string;memoryCount:number;contextUsed:{focus:string;memories:Memory[];events:LifeEvent[]};intent:{recommendAstrologer:boolean;specialization:string|null;safety:boolean}};
+export type ResonanceData={total:number;strong:number;partial:number;low:number;score:number;trend:{date:string;value:number}[];categories:Record<string,number>;category_basis:string};
+export type ConsultationRecord={id:number;user_id:number;astrologer_id:number;consultation_type:"call"|"chat";scheduled_at:string;status:string};
+export type AnalyticsData={total_users:number;daily_reflections:number;questions:number;compatibility_reports:number;shares:number;recommendations:number;bookings:number;conversion_rate:number;data_mode:string;events:Record<string,number>;metrics:{d1_retention:number;d7_retention:number;daily_opens:number;questions_per_user:number;memories_per_user:number;invites_per_user:number;invite_conversion:number;viral_coefficient:number}};
