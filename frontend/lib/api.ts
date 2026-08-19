@@ -8,7 +8,7 @@ function errorMessage(detail: unknown, fallback: string): string {
 
 export async function api<T>(path:string, options:RequestInit={}):Promise<T>{
   let response: Response;
-  try { response = await fetch(`${API_URL}${path}`, { ...options, headers:{"Content-Type":"application/json",...(options.headers||{})}, cache:"no-store" }); }
+  try { response = await fetch(`${API_URL}${path}`, { ...options, credentials:"include", headers:{"Content-Type":"application/json",...(options.headers||{})}, cache:"no-store" }); }
   catch { throw new Error("AstroTwin could not reach its service. Please try again in a moment."); }
   if(!response.ok) {
     const payload = await response.json().catch(()=>({detail:null}));

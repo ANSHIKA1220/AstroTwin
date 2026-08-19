@@ -1,6 +1,6 @@
 import datetime as dt
 from typing import Literal
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 
 Focus = Literal["Career", "Relationships", "Finance", "Personal Growth", "Education", "Family"]
 MemoryType = Literal["Profile", "Goal", "Event", "Reflection", "Conversation Insight"]
@@ -19,6 +19,27 @@ class UserCreate(BaseModel):
     primary_focus: Focus = "Personal Growth"
     interests: list[Focus] | str = Field(default_factory=list)
     current_focus: str = Field(default="", max_length=1000)
+
+class SignupRequest(UserCreate):
+    email: str = Field(min_length=5, max_length=200)
+    password: str = Field(min_length=8, max_length=200)
+
+    @field_validator("email")
+    @classmethod
+    def normalize_email(cls, value: str) -> str:
+        normalized = value.strip().lower()
+        if "@" not in normalized or normalized.startswith("@") or normalized.endswith("@"):
+            raise ValueError("Enter a valid email address")
+        return normalized
+
+class LoginRequest(BaseModel):
+    email: str = Field(min_length=5, max_length=200)
+    password: str = Field(min_length=1, max_length=200)
+
+    @field_validator("email")
+    @classmethod
+    def normalize_email(cls, value: str) -> str:
+        return value.strip().lower()
 
 class UserUpdate(BaseModel):
     name: str | None = Field(default=None, min_length=1, max_length=120)
@@ -45,6 +66,7 @@ class EventWrite(BaseModel):
 class ChatRequest(BaseModel):
     user_id: int = Field(gt=0)
     question: str = Field(min_length=1, max_length=5000)
+    conversation_id: int | None = Field(default=None, gt=0)
 
 class ReflectionWrite(BaseModel):
     date: dt.date = Field(default_factory=dt.date.today)

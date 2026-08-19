@@ -18,6 +18,26 @@ class User(Base):
     notifications: Mapped[str] = mapped_column(String(20), default="daily")
     created_at: Mapped[datetime] = mapped_column(DateTime, default=now)
 
+class Account(Base):
+    __tablename__ = "accounts"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), unique=True, index=True)
+    email: Mapped[str] = mapped_column(String(200), unique=True, index=True)
+    password_hash: Mapped[str] = mapped_column(String(500))
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=now)
+
+class AstrologyProfile(Base):
+    __tablename__ = "astrology_profiles"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), unique=True, index=True)
+    system: Mapped[str] = mapped_column(String(80), default="Vedic sidereal (Lahiri)")
+    resolved_place: Mapped[str] = mapped_column(String(240))
+    latitude: Mapped[float] = mapped_column(Float)
+    longitude: Mapped[float] = mapped_column(Float)
+    timezone: Mapped[str] = mapped_column(String(80))
+    chart_json: Mapped[str] = mapped_column(Text)
+    calculated_at: Mapped[datetime] = mapped_column(DateTime, default=now, onupdate=now)
+
 class Memory(Base):
     __tablename__ = "memories"
     id: Mapped[int] = mapped_column(primary_key=True)
