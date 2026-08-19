@@ -1,4 +1,12 @@
-export const API_URL = process.env.NEXT_PUBLIC_API_URL ?? (process.env.NODE_ENV === "development" ? "http://localhost:8000" : "");
+const configuredApiUrl = process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, "");
+
+// Production requests stay on the Vercel origin and are reverse-proxied to
+// Render by next.config.ts. This makes the signed session cookie first-party;
+// direct vercel.app -> onrender.com requests can be rejected by browsers that
+// block third-party cookies.
+export const API_URL = process.env.NODE_ENV === "development"
+  ? configuredApiUrl ?? "http://localhost:8000"
+  : "";
 
 function errorMessage(detail: unknown, fallback: string): string {
   if (typeof detail === "string") return detail;

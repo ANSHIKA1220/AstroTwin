@@ -22,7 +22,7 @@ export function AstroTwinApp(){
   const path=usePathname(); const router=useRouter();
   const [session,setSession]=useState<AuthSession|null>(null); const [ready,setReady]=useState(false);
   useEffect(()=>{api<AuthSession>("/api/auth/me").then(setSession).catch(()=>setSession(null)).finally(()=>setReady(true))},[]);
-  const activateDemo=async()=>{try{await post<{userId:number}>("/api/demo/activate",{});go("/dashboard")}catch{alert("Start the AstroTwin backend to explore the seeded demo.")}};
+  const activateDemo=async()=>{try{await post<{userId:number}>("/api/demo/activate",{});go("/dashboard")}catch(error){alert(error instanceof Error?error.message:"AstroTwin could not start the demo. Please try again.")}};
   if(path==="/") return <Landing onDemo={activateDemo}/>;
   if(path==="/onboarding") return <Onboarding onComplete={()=>go("/dashboard")}/>;
   if(path==="/login") return <Login onComplete={()=>go("/dashboard")}/>;
